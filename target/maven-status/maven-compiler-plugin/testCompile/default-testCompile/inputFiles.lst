@@ -1,0 +1,6 @@
+/home/ubuntu/crud-system/src/test/java/com/crudsystem/unit/InMemoryProductDAOTest.java
+/home/ubuntu/crud-system/src/test/java/com/crudsystem/unit/ProductServiceTest.java
+/home/ubuntu/crud-system/src/test/java/com/crudsystem/selenium/ProductWebInterfaceTest.java
+/home/ubuntu/crud-system/src/test/java/com/crudsystem/fuzz/ProductFuzzTest.java
+/home/ubuntu/crud-system/src/test/java/com/crudsystem/unit/ProductTest.java
+/home/ubuntu/crud-system/src/test/java/com/crudsystem/integration/FailureScenarioTest.java

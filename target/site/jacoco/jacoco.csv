@@ -1,0 +1,11 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+CRUD System,com.crudsystem.dao,InMemoryProductDAO,106,264,2,24,24,69,2,22,0,11
+CRUD System,com.crudsystem.util,LocalDateTimeAdapter,18,0,0,0,4,0,4,0,4,0
+CRUD System,com.crudsystem.util,JsonResponse,115,0,4,0,35,0,15,0,13,0
+CRUD System,com.crudsystem.exception,ProductNotFoundException,5,9,0,0,2,4,1,2,1,2
+CRUD System,com.crudsystem.exception,DataAccessException,0,9,0,0,0,4,0,2,0,2
+CRUD System,com.crudsystem.exception,ValidationException,0,9,0,0,0,4,0,2,0,2
+CRUD System,com.crudsystem.model,Product,4,230,4,32,0,61,4,34,0,20
+CRUD System,com.crudsystem.servlet,ProductServlet.ProductRequest,12,0,0,0,4,0,4,0,4,0
+CRUD System,com.crudsystem.servlet,ProductServlet,491,0,20,0,143,0,24,0,14,0
+CRUD System,com.crudsystem.service,ProductService,85,306,1,35,27,76,1,27,0,10

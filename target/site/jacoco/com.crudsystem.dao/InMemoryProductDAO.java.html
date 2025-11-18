@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InMemoryProductDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CRUD System</a> &gt; <a href="index.source.html" class="el_package">com.crudsystem.dao</a> &gt; <span class="el_source">InMemoryProductDAO.java</span></div><h1>InMemoryProductDAO.java</h1><pre class="source lang-java linenums">package com.crudsystem.dao;
+
+import com.crudsystem.exception.DataAccessException;
+import com.crudsystem.exception.ProductNotFoundException;
+import com.crudsystem.model.Product;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
+
+/**
+ * Implementação em memória do ProductDAO usando estruturas thread-safe.
+ * Simula persistência com validações robustas e tratamento de erros.
+ */
+public class InMemoryProductDAO implements ProductDAO {
+<span class="fc" id="L19">    private static final Logger logger = LoggerFactory.getLogger(InMemoryProductDAO.class);</span>
+    
+<span class="fc" id="L21">    private final Map&lt;Long, Product&gt; products = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L22">    private final AtomicLong idGenerator = new AtomicLong(1);</span>
+    
+    private static InMemoryProductDAO instance;
+    
+<span class="fc" id="L26">    private InMemoryProductDAO() {</span>
+<span class="fc" id="L27">        logger.info(&quot;InMemoryProductDAO inicializado&quot;);</span>
+<span class="fc" id="L28">    }</span>
+    
+    /**
+     * Singleton thread-safe para garantir única instância do DAO.
+     */
+    public static synchronized InMemoryProductDAO getInstance() {
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (instance == null) {</span>
+<span class="fc" id="L35">            instance = new InMemoryProductDAO();</span>
+        }
+<span class="fc" id="L37">        return instance;</span>
+    }
+
+    @Override
+    public Product create(Product product) throws DataAccessException {
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (product == null) {</span>
+<span class="fc" id="L43">            logger.error(&quot;Tentativa de criar produto nulo&quot;);</span>
+<span class="fc" id="L44">            throw new DataAccessException(&quot;Produto não pode ser nulo&quot;);</span>
+        }
+        
+        try {
+<span class="fc" id="L48">            product.validate();</span>
+            
+<span class="fc" id="L50">            Long id = idGenerator.getAndIncrement();</span>
+<span class="fc" id="L51">            product.setId(id);</span>
+<span class="fc" id="L52">            product.setCreatedAt(LocalDateTime.now());</span>
+<span class="fc" id="L53">            product.setUpdatedAt(LocalDateTime.now());</span>
+            
+<span class="fc" id="L55">            products.put(id, product);</span>
+<span class="fc" id="L56">            logger.info(&quot;Produto criado com sucesso: ID={}&quot;, id);</span>
+            
+<span class="fc" id="L58">            return product;</span>
+<span class="fc" id="L59">        } catch (IllegalStateException e) {</span>
+<span class="fc" id="L60">            logger.error(&quot;Erro de validação ao criar produto: {}&quot;, e.getMessage());</span>
+<span class="fc" id="L61">            throw new DataAccessException(&quot;Erro de validação: &quot; + e.getMessage(), e);</span>
+<span class="nc" id="L62">        } catch (Exception e) {</span>
+<span class="nc" id="L63">            logger.error(&quot;Erro inesperado ao criar produto&quot;, e);</span>
+<span class="nc" id="L64">            throw new DataAccessException(&quot;Erro ao criar produto: &quot; + e.getMessage(), e);</span>
+        }
+    }
+
+    @Override
+    public Optional&lt;Product&gt; findById(Long id) throws DataAccessException {
+<span class="fc bfc" id="L70" title="All 4 branches covered.">        if (id == null || id &lt;= 0) {</span>
+<span class="fc" id="L71">            logger.warn(&quot;Tentativa de buscar produto com ID inválido: {}&quot;, id);</span>
+<span class="fc" id="L72">            throw new DataAccessException(&quot;ID inválido: &quot; + id);</span>
+        }
+        
+        try {
+<span class="fc" id="L76">            Product product = products.get(id);</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">            logger.debug(&quot;Busca por ID={}: {}&quot;, id, product != null ? &quot;encontrado&quot; : &quot;não encontrado&quot;);</span>
+<span class="fc" id="L78">            return Optional.ofNullable(product);</span>
+<span class="nc" id="L79">        } catch (Exception e) {</span>
+<span class="nc" id="L80">            logger.error(&quot;Erro ao buscar produto por ID={}&quot;, id, e);</span>
+<span class="nc" id="L81">            throw new DataAccessException(&quot;Erro ao buscar produto: &quot; + e.getMessage(), e);</span>
+        }
+    }
+
+    @Override
+    public List&lt;Product&gt; findAll() throws DataAccessException {
+        try {
+<span class="fc" id="L88">            List&lt;Product&gt; allProducts = new ArrayList&lt;&gt;(products.values());</span>
+<span class="fc" id="L89">            logger.debug(&quot;Listando todos os produtos: {} encontrados&quot;, allProducts.size());</span>
+<span class="fc" id="L90">            return allProducts;</span>
+<span class="nc" id="L91">        } catch (Exception e) {</span>
+<span class="nc" id="L92">            logger.error(&quot;Erro ao listar produtos&quot;, e);</span>
+<span class="nc" id="L93">            throw new DataAccessException(&quot;Erro ao listar produtos: &quot; + e.getMessage(), e);</span>
+        }
+    }
+
+    @Override
+    public void update(Product product) throws ProductNotFoundException, DataAccessException {
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (product == null) {</span>
+<span class="fc" id="L100">            logger.error(&quot;Tentativa de atualizar produto nulo&quot;);</span>
+<span class="fc" id="L101">            throw new DataAccessException(&quot;Produto não pode ser nulo&quot;);</span>
+        }
+        
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (product.getId() == null) {</span>
+<span class="fc" id="L105">            logger.error(&quot;Tentativa de atualizar produto sem ID&quot;);</span>
+<span class="fc" id="L106">            throw new DataAccessException(&quot;Produto deve ter um ID para ser atualizado&quot;);</span>
+        }
+        
+        try {
+<span class="fc bfc" id="L110" title="All 2 branches covered.">            if (!products.containsKey(product.getId())) {</span>
+<span class="fc" id="L111">                logger.warn(&quot;Tentativa de atualizar produto inexistente: ID={}&quot;, product.getId());</span>
+<span class="fc" id="L112">                throw new ProductNotFoundException(product.getId());</span>
+            }
+            
+<span class="fc" id="L115">            product.validate();</span>
+<span class="fc" id="L116">            product.setUpdatedAt(LocalDateTime.now());</span>
+            
+<span class="fc" id="L118">            products.put(product.getId(), product);</span>
+<span class="fc" id="L119">            logger.info(&quot;Produto atualizado com sucesso: ID={}&quot;, product.getId());</span>
+            
+<span class="fc" id="L121">        } catch (ProductNotFoundException e) {</span>
+<span class="fc" id="L122">            throw e;</span>
+<span class="nc" id="L123">        } catch (IllegalStateException e) {</span>
+<span class="nc" id="L124">            logger.error(&quot;Erro de validação ao atualizar produto: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L125">            throw new DataAccessException(&quot;Erro de validação: &quot; + e.getMessage(), e);</span>
+<span class="nc" id="L126">        } catch (Exception e) {</span>
+<span class="nc" id="L127">            logger.error(&quot;Erro inesperado ao atualizar produto&quot;, e);</span>
+<span class="nc" id="L128">            throw new DataAccessException(&quot;Erro ao atualizar produto: &quot; + e.getMessage(), e);</span>
+<span class="fc" id="L129">        }</span>
+<span class="fc" id="L130">    }</span>
+
+    @Override
+    public void delete(Long id) throws ProductNotFoundException, DataAccessException {
+<span class="pc bpc" id="L134" title="1 of 4 branches missed.">        if (id == null || id &lt;= 0) {</span>
+<span class="fc" id="L135">            logger.error(&quot;Tentativa de deletar produto com ID inválido: {}&quot;, id);</span>
+<span class="fc" id="L136">            throw new DataAccessException(&quot;ID inválido: &quot; + id);</span>
+        }
+        
+        try {
+<span class="fc" id="L140">            Product removed = products.remove(id);</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">            if (removed == null) {</span>
+<span class="fc" id="L142">                logger.warn(&quot;Tentativa de deletar produto inexistente: ID={}&quot;, id);</span>
+<span class="fc" id="L143">                throw new ProductNotFoundException(id);</span>
+            }
+<span class="fc" id="L145">            logger.info(&quot;Produto deletado com sucesso: ID={}&quot;, id);</span>
+            
+<span class="fc" id="L147">        } catch (ProductNotFoundException e) {</span>
+<span class="fc" id="L148">            throw e;</span>
+<span class="nc" id="L149">        } catch (Exception e) {</span>
+<span class="nc" id="L150">            logger.error(&quot;Erro inesperado ao deletar produto&quot;, e);</span>
+<span class="nc" id="L151">            throw new DataAccessException(&quot;Erro ao deletar produto: &quot; + e.getMessage(), e);</span>
+<span class="fc" id="L152">        }</span>
+<span class="fc" id="L153">    }</span>
+
+    @Override
+    public boolean exists(Long id) throws DataAccessException {
+<span class="pc bpc" id="L157" title="1 of 4 branches missed.">        if (id == null || id &lt;= 0) {</span>
+<span class="fc" id="L158">            return false;</span>
+        }
+        
+        try {
+<span class="fc" id="L162">            return products.containsKey(id);</span>
+<span class="nc" id="L163">        } catch (Exception e) {</span>
+<span class="nc" id="L164">            logger.error(&quot;Erro ao verificar existência do produto&quot;, e);</span>
+<span class="nc" id="L165">            throw new DataAccessException(&quot;Erro ao verificar produto: &quot; + e.getMessage(), e);</span>
+        }
+    }
+
+    @Override
+    public long count() throws DataAccessException {
+        try {
+<span class="fc" id="L172">            return products.size();</span>
+<span class="nc" id="L173">        } catch (Exception e) {</span>
+<span class="nc" id="L174">            logger.error(&quot;Erro ao contar produtos&quot;, e);</span>
+<span class="nc" id="L175">            throw new DataAccessException(&quot;Erro ao contar produtos: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Método auxiliar para limpar todos os dados (útil para testes).
+     */
+    public void clear() {
+<span class="fc" id="L183">        products.clear();</span>
+<span class="fc" id="L184">        idGenerator.set(1);</span>
+<span class="fc" id="L185">        logger.info(&quot;Todos os produtos foram removidos&quot;);</span>
+<span class="fc" id="L186">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

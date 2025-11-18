@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JsonResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CRUD System</a> &gt; <a href="index.source.html" class="el_package">com.crudsystem.util</a> &gt; <span class="el_source">JsonResponse.java</span></div><h1>JsonResponse.java</h1><pre class="source lang-java linenums">package com.crudsystem.util;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Classe utilitária para construir respostas JSON padronizadas.
+ * Garante feedback consistente e seguro ao usuário.
+ */
+public class JsonResponse {
+<span class="nc" id="L15">    private static final Gson gson = new GsonBuilder()</span>
+<span class="nc" id="L16">            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())</span>
+<span class="nc" id="L17">            .create();</span>
+    
+    private boolean success;
+    private String message;
+    private Object data;
+    private Map&lt;String, Object&gt; metadata;
+    
+<span class="nc" id="L24">    private JsonResponse() {</span>
+<span class="nc" id="L25">        this.metadata = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L26">    }</span>
+    
+    public static JsonResponse success(String message) {
+<span class="nc" id="L29">        JsonResponse response = new JsonResponse();</span>
+<span class="nc" id="L30">        response.success = true;</span>
+<span class="nc" id="L31">        response.message = message;</span>
+<span class="nc" id="L32">        return response;</span>
+    }
+    
+    public static JsonResponse success(String message, Object data) {
+<span class="nc" id="L36">        JsonResponse response = success(message);</span>
+<span class="nc" id="L37">        response.data = data;</span>
+<span class="nc" id="L38">        return response;</span>
+    }
+    
+    public static JsonResponse error(String message) {
+<span class="nc" id="L42">        JsonResponse response = new JsonResponse();</span>
+<span class="nc" id="L43">        response.success = false;</span>
+<span class="nc" id="L44">        response.message = sanitizeErrorMessage(message);</span>
+<span class="nc" id="L45">        return response;</span>
+    }
+    
+    public static JsonResponse error(String message, int statusCode) {
+<span class="nc" id="L49">        JsonResponse response = error(message);</span>
+<span class="nc" id="L50">        response.addMetadata(&quot;statusCode&quot;, statusCode);</span>
+<span class="nc" id="L51">        return response;</span>
+    }
+    
+    public JsonResponse addMetadata(String key, Object value) {
+<span class="nc" id="L55">        this.metadata.put(key, value);</span>
+<span class="nc" id="L56">        return this;</span>
+    }
+    
+    public String toJson() {
+<span class="nc" id="L60">        return gson.toJson(this);</span>
+    }
+    
+    /**
+     * Sanitiza mensagens de erro para evitar exposição de informações sensíveis.
+     * Implementa fail gracefully removendo stack traces e detalhes internos.
+     */
+    private static String sanitizeErrorMessage(String message) {
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        if (message == null) {</span>
+<span class="nc" id="L69">            return &quot;Erro desconhecido&quot;;</span>
+        }
+        
+        // Remove stack traces
+<span class="nc" id="L73">        int stackTraceIndex = message.indexOf(&quot;\n\tat &quot;);</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (stackTraceIndex &gt; 0) {</span>
+<span class="nc" id="L75">            message = message.substring(0, stackTraceIndex);</span>
+        }
+        
+        // Remove caminhos de arquivo
+<span class="nc" id="L79">        message = message.replaceAll(&quot;/[\\w/.-]+\\.java:\\d+&quot;, &quot;[arquivo]&quot;);</span>
+        
+        // Remove informações de classe interna
+<span class="nc" id="L82">        message = message.replaceAll(&quot;com\\.crudsystem\\.[\\w.]+:&quot;, &quot;&quot;);</span>
+        
+<span class="nc" id="L84">        return message.trim();</span>
+    }
+    
+    // Getters
+    public boolean isSuccess() {
+<span class="nc" id="L89">        return success;</span>
+    }
+    
+    public String getMessage() {
+<span class="nc" id="L93">        return message;</span>
+    }
+    
+    public Object getData() {
+<span class="nc" id="L97">        return data;</span>
+    }
+    
+    public Map&lt;String, Object&gt; getMetadata() {
+<span class="nc" id="L101">        return metadata;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

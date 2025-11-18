@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CRUD System</a> &gt; <a href="index.source.html" class="el_package">com.crudsystem.service</a> &gt; <span class="el_source">ProductService.java</span></div><h1>ProductService.java</h1><pre class="source lang-java linenums">package com.crudsystem.service;
+
+import com.crudsystem.dao.ProductDAO;
+import com.crudsystem.exception.DataAccessException;
+import com.crudsystem.exception.ProductNotFoundException;
+import com.crudsystem.exception.ValidationException;
+import com.crudsystem.model.Product;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+/**
+ * Camada de serviço para lógica de negócio relacionada a produtos.
+ * Implementa validações adicionais e tratamento robusto de erros.
+ */
+public class ProductService {
+<span class="fc" id="L19">    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);</span>
+    
+    private final ProductDAO productDAO;
+    
+<span class="fc" id="L23">    public ProductService(ProductDAO productDAO) {</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (productDAO == null) {</span>
+<span class="fc" id="L25">            throw new IllegalArgumentException(&quot;ProductDAO não pode ser nulo&quot;);</span>
+        }
+<span class="fc" id="L27">        this.productDAO = productDAO;</span>
+<span class="fc" id="L28">        logger.info(&quot;ProductService inicializado&quot;);</span>
+<span class="fc" id="L29">    }</span>
+    
+    /**
+     * Cria um novo produto com validações de negócio.
+     */
+    public Product createProduct(String name, String description, BigDecimal price, Integer quantity) 
+            throws ValidationException, DataAccessException {
+        
+<span class="fc" id="L37">        logger.debug(&quot;Criando produto: name={}, price={}, quantity={}&quot;, name, price, quantity);</span>
+        
+        // Fail early: validação de entrada
+<span class="fc" id="L40">        validateProductInput(name, price, quantity);</span>
+        
+        try {
+<span class="fc" id="L43">            Product product = new Product();</span>
+<span class="fc" id="L44">            product.setName(name);</span>
+<span class="fc" id="L45">            product.setDescription(description);</span>
+<span class="fc" id="L46">            product.setPrice(price);</span>
+<span class="fc" id="L47">            product.setQuantity(quantity);</span>
+            
+<span class="fc" id="L49">            Product created = productDAO.create(product);</span>
+<span class="fc" id="L50">            logger.info(&quot;Produto criado com sucesso: ID={}&quot;, created.getId());</span>
+<span class="fc" id="L51">            return created;</span>
+            
+<span class="fc" id="L53">        } catch (IllegalArgumentException e) {</span>
+<span class="fc" id="L54">            logger.error(&quot;Erro de validação ao criar produto: {}&quot;, e.getMessage());</span>
+<span class="fc" id="L55">            throw new ValidationException(&quot;Dados inválidos: &quot; + e.getMessage(), e);</span>
+<span class="nc" id="L56">        } catch (DataAccessException e) {</span>
+<span class="nc" id="L57">            logger.error(&quot;Erro ao acessar dados ao criar produto&quot;, e);</span>
+<span class="nc" id="L58">            throw e;</span>
+<span class="nc" id="L59">        } catch (Exception e) {</span>
+<span class="nc" id="L60">            logger.error(&quot;Erro inesperado ao criar produto&quot;, e);</span>
+<span class="nc" id="L61">            throw new DataAccessException(&quot;Erro inesperado: &quot; + e.getMessage(), e);</span>
+        }
+    }
+    
+    /**
+     * Busca um produto por ID.
+     */
+    public Product getProductById(Long id) throws ProductNotFoundException, DataAccessException {
+<span class="fc bfc" id="L69" title="All 4 branches covered.">        if (id == null || id &lt;= 0) {</span>
+<span class="fc" id="L70">            logger.warn(&quot;Tentativa de buscar produto com ID inválido: {}&quot;, id);</span>
+<span class="fc" id="L71">            throw new ProductNotFoundException(&quot;ID inválido: &quot; + id);</span>
+        }
+        
+        try {
+<span class="fc" id="L75">            return productDAO.findById(id)</span>
+<span class="fc" id="L76">                    .orElseThrow(() -&gt; new ProductNotFoundException(id));</span>
+<span class="fc" id="L77">        } catch (ProductNotFoundException e) {</span>
+<span class="fc" id="L78">            logger.warn(&quot;Produto não encontrado: ID={}&quot;, id);</span>
+<span class="fc" id="L79">            throw e;</span>
+<span class="nc" id="L80">        } catch (DataAccessException e) {</span>
+<span class="nc" id="L81">            logger.error(&quot;Erro ao buscar produto: ID={}&quot;, id, e);</span>
+<span class="nc" id="L82">            throw e;</span>
+        }
+    }
+    
+    /**
+     * Lista todos os produtos.
+     */
+    public List&lt;Product&gt; getAllProducts() throws DataAccessException {
+        try {
+<span class="fc" id="L91">            List&lt;Product&gt; products = productDAO.findAll();</span>
+<span class="fc" id="L92">            logger.debug(&quot;Listados {} produtos&quot;, products.size());</span>
+<span class="fc" id="L93">            return products;</span>
+<span class="nc" id="L94">        } catch (DataAccessException e) {</span>
+<span class="nc" id="L95">            logger.error(&quot;Erro ao listar produtos&quot;, e);</span>
+<span class="nc" id="L96">            throw e;</span>
+        }
+    }
+    
+    /**
+     * Atualiza um produto existente.
+     */
+    public void updateProduct(Long id, String name, String description, BigDecimal price, Integer quantity) 
+            throws ProductNotFoundException, ValidationException, DataAccessException {
+        
+<span class="fc" id="L106">        logger.debug(&quot;Atualizando produto: ID={}&quot;, id);</span>
+        
+<span class="fc bfc" id="L108" title="All 4 branches covered.">        if (id == null || id &lt;= 0) {</span>
+<span class="fc" id="L109">            throw new ValidationException(&quot;ID inválido: &quot; + id);</span>
+        }
+        
+        // Fail early: validação de entrada
+<span class="fc" id="L113">        validateProductInput(name, price, quantity);</span>
+        
+        try {
+            // Verifica se o produto existe
+<span class="fc" id="L117">            Product product = getProductById(id);</span>
+            
+            // Atualiza os campos
+<span class="fc" id="L120">            product.setName(name);</span>
+<span class="fc" id="L121">            product.setDescription(description);</span>
+<span class="fc" id="L122">            product.setPrice(price);</span>
+<span class="fc" id="L123">            product.setQuantity(quantity);</span>
+            
+<span class="fc" id="L125">            productDAO.update(product);</span>
+<span class="fc" id="L126">            logger.info(&quot;Produto atualizado com sucesso: ID={}&quot;, id);</span>
+            
+<span class="fc" id="L128">        } catch (ProductNotFoundException e) {</span>
+<span class="fc" id="L129">            throw e;</span>
+<span class="nc" id="L130">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L131">            logger.error(&quot;Erro de validação ao atualizar produto: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L132">            throw new ValidationException(&quot;Dados inválidos: &quot; + e.getMessage(), e);</span>
+<span class="nc" id="L133">        } catch (DataAccessException e) {</span>
+<span class="nc" id="L134">            logger.error(&quot;Erro ao acessar dados ao atualizar produto&quot;, e);</span>
+<span class="nc" id="L135">            throw e;</span>
+<span class="nc" id="L136">        } catch (Exception e) {</span>
+<span class="nc" id="L137">            logger.error(&quot;Erro inesperado ao atualizar produto&quot;, e);</span>
+<span class="nc" id="L138">            throw new DataAccessException(&quot;Erro inesperado: &quot; + e.getMessage(), e);</span>
+<span class="fc" id="L139">        }</span>
+<span class="fc" id="L140">    }</span>
+    
+    /**
+     * Remove um produto.
+     */
+    public void deleteProduct(Long id) throws ProductNotFoundException, DataAccessException {
+<span class="fc bfc" id="L146" title="All 4 branches covered.">        if (id == null || id &lt;= 0) {</span>
+<span class="fc" id="L147">            logger.warn(&quot;Tentativa de deletar produto com ID inválido: {}&quot;, id);</span>
+<span class="fc" id="L148">            throw new ProductNotFoundException(&quot;ID inválido: &quot; + id);</span>
+        }
+        
+        try {
+<span class="fc" id="L152">            productDAO.delete(id);</span>
+<span class="fc" id="L153">            logger.info(&quot;Produto deletado com sucesso: ID={}&quot;, id);</span>
+<span class="fc" id="L154">        } catch (ProductNotFoundException e) {</span>
+<span class="fc" id="L155">            logger.warn(&quot;Produto não encontrado para deleção: ID={}&quot;, id);</span>
+<span class="fc" id="L156">            throw e;</span>
+<span class="nc" id="L157">        } catch (DataAccessException e) {</span>
+<span class="nc" id="L158">            logger.error(&quot;Erro ao deletar produto: ID={}&quot;, id, e);</span>
+<span class="nc" id="L159">            throw e;</span>
+<span class="fc" id="L160">        }</span>
+<span class="fc" id="L161">    }</span>
+    
+    /**
+     * Verifica se um produto existe.
+     */
+    public boolean productExists(Long id) throws DataAccessException {
+<span class="pc bpc" id="L167" title="1 of 4 branches missed.">        if (id == null || id &lt;= 0) {</span>
+<span class="fc" id="L168">            return false;</span>
+        }
+        
+        try {
+<span class="fc" id="L172">            return productDAO.exists(id);</span>
+<span class="nc" id="L173">        } catch (DataAccessException e) {</span>
+<span class="nc" id="L174">            logger.error(&quot;Erro ao verificar existência do produto: ID={}&quot;, id, e);</span>
+<span class="nc" id="L175">            throw e;</span>
+        }
+    }
+    
+    /**
+     * Valida entrada de dados do produto (fail early).
+     */
+    private void validateProductInput(String name, BigDecimal price, Integer quantity) 
+            throws ValidationException {
+        
+<span class="fc bfc" id="L185" title="All 4 branches covered.">        if (name == null || name.trim().isEmpty()) {</span>
+<span class="fc" id="L186">            throw new ValidationException(&quot;Nome do produto é obrigatório&quot;);</span>
+        }
+        
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        if (name.length() &gt; 100) {</span>
+<span class="fc" id="L190">            throw new ValidationException(&quot;Nome do produto não pode exceder 100 caracteres&quot;);</span>
+        }
+        
+<span class="fc bfc" id="L193" title="All 2 branches covered.">        if (price == null) {</span>
+<span class="fc" id="L194">            throw new ValidationException(&quot;Preço é obrigatório&quot;);</span>
+        }
+        
+<span class="fc bfc" id="L197" title="All 2 branches covered.">        if (price.compareTo(BigDecimal.ZERO) &lt; 0) {</span>
+<span class="fc" id="L198">            throw new ValidationException(&quot;Preço não pode ser negativo&quot;);</span>
+        }
+        
+<span class="fc bfc" id="L201" title="All 2 branches covered.">        if (price.compareTo(new BigDecimal(&quot;999999.99&quot;)) &gt; 0) {</span>
+<span class="fc" id="L202">            throw new ValidationException(&quot;Preço não pode exceder 999999.99&quot;);</span>
+        }
+        
+<span class="fc bfc" id="L205" title="All 2 branches covered.">        if (quantity == null) {</span>
+<span class="fc" id="L206">            throw new ValidationException(&quot;Quantidade é obrigatória&quot;);</span>
+        }
+        
+<span class="fc bfc" id="L209" title="All 2 branches covered.">        if (quantity &lt; 0) {</span>
+<span class="fc" id="L210">            throw new ValidationException(&quot;Quantidade não pode ser negativa&quot;);</span>
+        }
+        
+<span class="fc bfc" id="L213" title="All 2 branches covered.">        if (quantity &gt; 999999) {</span>
+<span class="fc" id="L214">            throw new ValidationException(&quot;Quantidade não pode exceder 999999&quot;);</span>
+        }
+<span class="fc" id="L216">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

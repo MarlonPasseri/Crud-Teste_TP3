@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.crudsystem.unit.InMemoryProductDAOTest" time="0.048" tests="21" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
+    <property name="java.specification.version" value="11"/>
+    <property name="sun.cpu.isalist" value=""/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/ubuntu/crud-system/target/test-classes:/home/ubuntu/crud-system/target/classes:/home/ubuntu/.m2/repository/jakarta/servlet/jakarta.servlet-api/5.0.0/jakarta.servlet-api-5.0.0.jar:/home/ubuntu/.m2/repository/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar:/home/ubuntu/.m2/repository/org/slf4j/slf4j-simple/2.0.9/slf4j-simple-2.0.9.jar:/home/ubuntu/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/home/ubuntu/.m2/repository/org/junit/jupiter/junit-jupiter/5.9.3/junit-jupiter-5.9.3.jar:/home/ubuntu/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.3/junit-jupiter-api-5.9.3.jar:/home/ubuntu/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/home/ubuntu/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.3/junit-jupiter-engine-5.9.3.jar:/home/ubuntu/.m2/repository/org/junit/platform/junit-platform-engine/1.9.3/junit-platform-engine-1.9.3.jar:/home/ubuntu/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.9.3/junit-jupiter-params-5.9.3.jar:/home/ubuntu/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/ubuntu/.m2/repository/org/mockito/mockito-core/5.5.0/mockito-core-5.5.0.jar:/home/ubuntu/.m2/repository/net/bytebuddy/byte-buddy/1.14.6/byte-buddy-1.14.6.jar:/home/ubuntu/.m2/repository/net/bytebuddy/byte-buddy-agent/1.14.6/byte-buddy-agent-1.14.6.jar:/home/ubuntu/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:/home/ubuntu/.m2/repository/org/mockito/mockito-junit-jupiter/5.5.0/mockito-junit-jupiter-5.5.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-java/4.15.0/selenium-java-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-api/4.15.0/selenium-api-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-chrome-driver/4.15.0/selenium-chrome-driver-4.15.0.jar:/home/ubuntu/.m2/repository/com/google/auto/service/auto-service-annotations/1.1.1/auto-service-annotations-1.1.1.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-chromium-driver/4.15.0/selenium-chromium-driver-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-json/4.15.0/selenium-json-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-manager/4.15.0/selenium-manager-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-devtools-v117/4.15.0/selenium-devtools-v117-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-devtools-v118/4.15.0/selenium-devtools-v118-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-devtools-v119/4.15.0/selenium-devtools-v119-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-devtools-v85/4.15.0/selenium-devtools-v85-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-edge-driver/4.15.0/selenium-edge-driver-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-firefox-driver/4.15.0/selenium-firefox-driver-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-http/4.15.0/selenium-http-4.15.0.jar:/home/ubuntu/.m2/repository/dev/failsafe/failsafe/3.3.2/failsafe-3.3.2.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-ie-driver/4.15.0/selenium-ie-driver-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-remote-driver/4.15.0/selenium-remote-driver-4.15.0.jar:/home/ubuntu/.m2/repository/com/google/guava/guava/32.1.2-jre/guava-32.1.2-jre.jar:/home/ubuntu/.m2/repository/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar:/home/ubuntu/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/home/ubuntu/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/home/ubuntu/.m2/repository/org/checkerframework/checker-qual/3.33.0/checker-qual-3.33.0.jar:/home/ubuntu/.m2/repository/com/google/errorprone/error_prone_annotations/2.18.0/error_prone_annotations-2.18.0.jar:/home/ubuntu/.m2/repository/com/google/j2objc/j2objc-annotations/2.8/j2objc-annotations-2.8.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-api/1.28.0/opentelemetry-api-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-context/1.28.0/opentelemetry-context-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-exporter-logging/1.28.0/opentelemetry-exporter-logging-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-sdk-metrics/1.28.0/opentelemetry-sdk-metrics-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-extension-incubator/1.28.0-alpha/opentelemetry-extension-incubator-1.28.0-alpha.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-sdk-logs/1.28.0/opentelemetry-sdk-logs-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-sdk-common/1.28.0/opentelemetry-sdk-common-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-sdk-extension-autoconfigure-spi/1.28.0/opentelemetry-sdk-extension-autoconfigure-spi-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-sdk-extension-autoconfigure/1.28.0/opentelemetry-sdk-extension-autoconfigure-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-api-events/1.28.0-alpha/opentelemetry-api-events-1.28.0-alpha.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-sdk-trace/1.28.0/opentelemetry-sdk-trace-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-sdk/1.28.0/opentelemetry-sdk-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-semconv/1.28.0-alpha/opentelemetry-semconv-1.28.0-alpha.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-os/4.15.0/selenium-os-4.15.0.jar:/home/ubuntu/.m2/repository/org/apache/commons/commons-exec/1.3/commons-exec-1.3.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-safari-driver/4.15.0/selenium-safari-driver-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-support/4.15.0/selenium-support-4.15.0.jar:/home/ubuntu/.m2/repository/io/github/bonigarcia/webdrivermanager/5.5.3/webdrivermanager-5.5.3.jar:/home/ubuntu/.m2/repository/com/github/docker-java/docker-java/3.3.3/docker-java-3.3.3.jar:/home/ubuntu/.m2/repository/com/github/docker-java/docker-java-core/3.3.3/docker-java-core-3.3.3.jar:/home/ubuntu/.m2/repository/com/github/docker-java/docker-java-api/3.3.3/docker-java-api-3.3.3.jar:/home/ubuntu/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.10.3/jackson-annotations-2.10.3.jar:/home/ubuntu/.m2/repository/commons-io/commons-io/2.6/commons-io-2.6.jar:/home/ubuntu/.m2/repository/org/apache/commons/commons-compress/1.21/commons-compress-1.21.jar:/home/ubuntu/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.10.3/jackson-databind-2.10.3.jar:/home/ubuntu/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.10.3/jackson-core-2.10.3.jar:/home/ubuntu/.m2/repository/org/bouncycastle/bcpkix-jdk18on/1.75/bcpkix-jdk18on-1.75.jar:/home/ubuntu/.m2/repository/org/bouncycastle/bcprov-jdk18on/1.75/bcprov-jdk18on-1.75.jar:/home/ubuntu/.m2/repository/org/bouncycastle/bcutil-jdk18on/1.75/bcutil-jdk18on-1.75.jar:/home/ubuntu/.m2/repository/org/slf4j/jcl-over-slf4j/1.7.30/jcl-over-slf4j-1.7.30.jar:/home/ubuntu/.m2/repository/com/github/docker-java/docker-java-transport-httpclient5/3.3.3/docker-java-transport-httpclient5-3.3.3.jar:/home/ubuntu/.m2/repository/com/github/docker-java/docker-java-transport/3.3.3/docker-java-transport-3.3.3.jar:/home/ubuntu/.m2/repository/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/home/ubuntu/.m2/repository/org/brotli/dec/0.1.2/dec-0.1.2.jar:/home/ubuntu/.m2/repository/org/apache/commons/commons-lang3/3.13.0/commons-lang3-3.13.0.jar:/home/ubuntu/.m2/repository/org/apache/httpcomponents/client5/httpclient5/5.2.1/httpclient5-5.2.1.jar:/home/ubuntu/.m2/repository/org/apache/httpcomponents/core5/httpcore5/5.2/httpcore5-5.2.jar:/home/ubuntu/.m2/repository/org/apache/httpcomponents/core5/httpcore5-h2/5.2/httpcore5-h2-5.2.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/jetty-server/11.0.15/jetty-server-11.0.15.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/toolchain/jetty-jakarta-servlet-api/5.0.2/jetty-jakarta-servlet-api-5.0.2.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/jetty-http/11.0.15/jetty-http-11.0.15.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/jetty-util/11.0.15/jetty-util-11.0.15.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/jetty-io/11.0.15/jetty-io-11.0.15.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/jetty-servlet/11.0.15/jetty-servlet-11.0.15.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/jetty-security/11.0.15/jetty-security-11.0.15.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/jetty-webapp/11.0.15/jetty-webapp-11.0.15.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/jetty-xml/11.0.15/jetty-xml-11.0.15.jar:/home/ubuntu/.m2/repository/org/assertj/assertj-core/3.24.2/assertj-core-3.24.2.jar:/home/ubuntu/.m2/repository/com/code-intelligence/jazzer-junit/0.20.0/jazzer-junit-0.20.0.jar:/home/ubuntu/.m2/repository/com/code-intelligence/jazzer-api/0.20.0/jazzer-api-0.20.0.jar:/home/ubuntu/.m2/repository/com/code-intelligence/jazzer/0.20.0/jazzer-0.20.0.jar:/home/ubuntu/.m2/repository/org/junit/platform/junit-platform-commons/1.8.2/junit-platform-commons-1.8.2.jar:/home/ubuntu/.m2/repository/org/junit/platform/junit-platform-launcher/1.8.2/junit-platform-launcher-1.8.2.jar:"/>
+    <property name="java.vm.vendor" value="Ubuntu"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://ubuntu.com/"/>
+    <property name="user.timezone" value="America/New_York"/>
+    <property name="java.vm.specification.version" value="11"/>
+    <property name="os.name" value="Linux"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-amd64/lib"/>
+    <property name="sun.java.command" value="/home/ubuntu/crud-system/target/surefire/surefirebooter-20251118073759794_3.jar /home/ubuntu/crud-system/target/surefire 2025-11-18T07-37-59_697-jvmRun1 surefire-20251118073759794_1tmp surefire_0-20251118073759794_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="test" value="!com.crudsystem.selenium.*Test"/>
+    <property name="surefire.test.class.path" value="/home/ubuntu/crud-system/target/test-classes:/home/ubuntu/crud-system/target/classes:/home/ubuntu/.m2/repository/jakarta/servlet/jakarta.servlet-api/5.0.0/jakarta.servlet-api-5.0.0.jar:/home/ubuntu/.m2/repository/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar:/home/ubuntu/.m2/repository/org/slf4j/slf4j-simple/2.0.9/slf4j-simple-2.0.9.jar:/home/ubuntu/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/home/ubuntu/.m2/repository/org/junit/jupiter/junit-jupiter/5.9.3/junit-jupiter-5.9.3.jar:/home/ubuntu/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.3/junit-jupiter-api-5.9.3.jar:/home/ubuntu/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/home/ubuntu/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.3/junit-jupiter-engine-5.9.3.jar:/home/ubuntu/.m2/repository/org/junit/platform/junit-platform-engine/1.9.3/junit-platform-engine-1.9.3.jar:/home/ubuntu/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.9.3/junit-jupiter-params-5.9.3.jar:/home/ubuntu/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/ubuntu/.m2/repository/org/mockito/mockito-core/5.5.0/mockito-core-5.5.0.jar:/home/ubuntu/.m2/repository/net/bytebuddy/byte-buddy/1.14.6/byte-buddy-1.14.6.jar:/home/ubuntu/.m2/repository/net/bytebuddy/byte-buddy-agent/1.14.6/byte-buddy-agent-1.14.6.jar:/home/ubuntu/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:/home/ubuntu/.m2/repository/org/mockito/mockito-junit-jupiter/5.5.0/mockito-junit-jupiter-5.5.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-java/4.15.0/selenium-java-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-api/4.15.0/selenium-api-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-chrome-driver/4.15.0/selenium-chrome-driver-4.15.0.jar:/home/ubuntu/.m2/repository/com/google/auto/service/auto-service-annotations/1.1.1/auto-service-annotations-1.1.1.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-chromium-driver/4.15.0/selenium-chromium-driver-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-json/4.15.0/selenium-json-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-manager/4.15.0/selenium-manager-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-devtools-v117/4.15.0/selenium-devtools-v117-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-devtools-v118/4.15.0/selenium-devtools-v118-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-devtools-v119/4.15.0/selenium-devtools-v119-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-devtools-v85/4.15.0/selenium-devtools-v85-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-edge-driver/4.15.0/selenium-edge-driver-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-firefox-driver/4.15.0/selenium-firefox-driver-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-http/4.15.0/selenium-http-4.15.0.jar:/home/ubuntu/.m2/repository/dev/failsafe/failsafe/3.3.2/failsafe-3.3.2.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-ie-driver/4.15.0/selenium-ie-driver-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-remote-driver/4.15.0/selenium-remote-driver-4.15.0.jar:/home/ubuntu/.m2/repository/com/google/guava/guava/32.1.2-jre/guava-32.1.2-jre.jar:/home/ubuntu/.m2/repository/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar:/home/ubuntu/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/home/ubuntu/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/home/ubuntu/.m2/repository/org/checkerframework/checker-qual/3.33.0/checker-qual-3.33.0.jar:/home/ubuntu/.m2/repository/com/google/errorprone/error_prone_annotations/2.18.0/error_prone_annotations-2.18.0.jar:/home/ubuntu/.m2/repository/com/google/j2objc/j2objc-annotations/2.8/j2objc-annotations-2.8.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-api/1.28.0/opentelemetry-api-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-context/1.28.0/opentelemetry-context-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-exporter-logging/1.28.0/opentelemetry-exporter-logging-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-sdk-metrics/1.28.0/opentelemetry-sdk-metrics-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-extension-incubator/1.28.0-alpha/opentelemetry-extension-incubator-1.28.0-alpha.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-sdk-logs/1.28.0/opentelemetry-sdk-logs-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-sdk-common/1.28.0/opentelemetry-sdk-common-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-sdk-extension-autoconfigure-spi/1.28.0/opentelemetry-sdk-extension-autoconfigure-spi-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-sdk-extension-autoconfigure/1.28.0/opentelemetry-sdk-extension-autoconfigure-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-api-events/1.28.0-alpha/opentelemetry-api-events-1.28.0-alpha.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-sdk-trace/1.28.0/opentelemetry-sdk-trace-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-sdk/1.28.0/opentelemetry-sdk-1.28.0.jar:/home/ubuntu/.m2/repository/io/opentelemetry/opentelemetry-semconv/1.28.0-alpha/opentelemetry-semconv-1.28.0-alpha.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-os/4.15.0/selenium-os-4.15.0.jar:/home/ubuntu/.m2/repository/org/apache/commons/commons-exec/1.3/commons-exec-1.3.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-safari-driver/4.15.0/selenium-safari-driver-4.15.0.jar:/home/ubuntu/.m2/repository/org/seleniumhq/selenium/selenium-support/4.15.0/selenium-support-4.15.0.jar:/home/ubuntu/.m2/repository/io/github/bonigarcia/webdrivermanager/5.5.3/webdrivermanager-5.5.3.jar:/home/ubuntu/.m2/repository/com/github/docker-java/docker-java/3.3.3/docker-java-3.3.3.jar:/home/ubuntu/.m2/repository/com/github/docker-java/docker-java-core/3.3.3/docker-java-core-3.3.3.jar:/home/ubuntu/.m2/repository/com/github/docker-java/docker-java-api/3.3.3/docker-java-api-3.3.3.jar:/home/ubuntu/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.10.3/jackson-annotations-2.10.3.jar:/home/ubuntu/.m2/repository/commons-io/commons-io/2.6/commons-io-2.6.jar:/home/ubuntu/.m2/repository/org/apache/commons/commons-compress/1.21/commons-compress-1.21.jar:/home/ubuntu/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.10.3/jackson-databind-2.10.3.jar:/home/ubuntu/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.10.3/jackson-core-2.10.3.jar:/home/ubuntu/.m2/repository/org/bouncycastle/bcpkix-jdk18on/1.75/bcpkix-jdk18on-1.75.jar:/home/ubuntu/.m2/repository/org/bouncycastle/bcprov-jdk18on/1.75/bcprov-jdk18on-1.75.jar:/home/ubuntu/.m2/repository/org/bouncycastle/bcutil-jdk18on/1.75/bcutil-jdk18on-1.75.jar:/home/ubuntu/.m2/repository/org/slf4j/jcl-over-slf4j/1.7.30/jcl-over-slf4j-1.7.30.jar:/home/ubuntu/.m2/repository/com/github/docker-java/docker-java-transport-httpclient5/3.3.3/docker-java-transport-httpclient5-3.3.3.jar:/home/ubuntu/.m2/repository/com/github/docker-java/docker-java-transport/3.3.3/docker-java-transport-3.3.3.jar:/home/ubuntu/.m2/repository/net/java/dev/jna/jna/5.12.1/jna-5.12.1.jar:/home/ubuntu/.m2/repository/org/brotli/dec/0.1.2/dec-0.1.2.jar:/home/ubuntu/.m2/repository/org/apache/commons/commons-lang3/3.13.0/commons-lang3-3.13.0.jar:/home/ubuntu/.m2/repository/org/apache/httpcomponents/client5/httpclient5/5.2.1/httpclient5-5.2.1.jar:/home/ubuntu/.m2/repository/org/apache/httpcomponents/core5/httpcore5/5.2/httpcore5-5.2.jar:/home/ubuntu/.m2/repository/org/apache/httpcomponents/core5/httpcore5-h2/5.2/httpcore5-h2-5.2.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/jetty-server/11.0.15/jetty-server-11.0.15.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/toolchain/jetty-jakarta-servlet-api/5.0.2/jetty-jakarta-servlet-api-5.0.2.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/jetty-http/11.0.15/jetty-http-11.0.15.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/jetty-util/11.0.15/jetty-util-11.0.15.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/jetty-io/11.0.15/jetty-io-11.0.15.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/jetty-servlet/11.0.15/jetty-servlet-11.0.15.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/jetty-security/11.0.15/jetty-security-11.0.15.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/jetty-webapp/11.0.15/jetty-webapp-11.0.15.jar:/home/ubuntu/.m2/repository/org/eclipse/jetty/jetty-xml/11.0.15/jetty-xml-11.0.15.jar:/home/ubuntu/.m2/repository/org/assertj/assertj-core/3.24.2/assertj-core-3.24.2.jar:/home/ubuntu/.m2/repository/com/code-intelligence/jazzer-junit/0.20.0/jazzer-junit-0.20.0.jar:/home/ubuntu/.m2/repository/com/code-intelligence/jazzer-api/0.20.0/jazzer-api-0.20.0.jar:/home/ubuntu/.m2/repository/com/code-intelligence/jazzer/0.20.0/jazzer-0.20.0.jar:/home/ubuntu/.m2/repository/org/junit/platform/junit-platform-commons/1.8.2/junit-platform-commons-1.8.2.jar:/home/ubuntu/.m2/repository/org/junit/platform/junit-platform-launcher/1.8.2/junit-platform-launcher-1.8.2.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/ubuntu"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2025-07-15"/>
+    <property name="java.home" value="/usr/lib/jvm/java-11-openjdk-amd64"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/home/ubuntu/crud-system"/>
+    <property name="java.vm.compressedOopsMode" value="32-bit"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
+    <property name="surefire.real.class.path" value="/home/ubuntu/crud-system/target/surefire/surefirebooter-20251118073759794_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="11.0.28+6-post-Ubuntu-1ubuntu122.04.1"/>
+    <property name="user.name" value="ubuntu"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.1.102"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="/home/ubuntu/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://bugs.launchpad.net/ubuntu/+source/openjdk-lts"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="11.0.28"/>
+    <property name="user.dir" value="/home/ubuntu/crud-system"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Ubuntu"/>
+    <property name="java.vm.version" value="11.0.28+6-post-Ubuntu-1ubuntu122.04.1"/>
+    <property name="java.specification.maintenance.version" value="3"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="55.0"/>
+  </properties>
+  <testcase name="shouldCreateValidProduct" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.001">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - InMemoryProductDAO inicializado
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto criado com sucesso: ID=1
+]]></system-err>
+  </testcase>
+  <testcase name="shouldThrowExceptionWhenCreatingNullProduct" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.001">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] ERROR com.crudsystem.dao.InMemoryProductDAO - Tentativa de criar produto nulo
+]]></system-err>
+  </testcase>
+  <testcase name="shouldThrowExceptionWhenCreatingInvalidProduct" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.001">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] ERROR com.crudsystem.dao.InMemoryProductDAO - Erro de validação ao criar produto: Produto inválido: nome é obrigatório
+]]></system-err>
+  </testcase>
+  <testcase name="shouldFindProductById" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.001">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto criado com sucesso: ID=1
+]]></system-err>
+  </testcase>
+  <testcase name="shouldReturnEmptyOptionalForNonExistentId" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.001">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+]]></system-err>
+  </testcase>
+  <testcase name="shouldThrowExceptionWhenFindingByNullId" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.001">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] WARN com.crudsystem.dao.InMemoryProductDAO - Tentativa de buscar produto com ID inválido: null
+]]></system-err>
+  </testcase>
+  <testcase name="shouldThrowExceptionWhenFindingByNegativeId" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.001">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] WARN com.crudsystem.dao.InMemoryProductDAO - Tentativa de buscar produto com ID inválido: -1
+]]></system-err>
+  </testcase>
+  <testcase name="shouldFindAllProducts" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.001">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto criado com sucesso: ID=1
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto criado com sucesso: ID=2
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto criado com sucesso: ID=3
+]]></system-err>
+  </testcase>
+  <testcase name="shouldReturnEmptyListWhenNoProducts" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.0">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+]]></system-err>
+  </testcase>
+  <testcase name="shouldUpdateExistingProduct" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.002">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto criado com sucesso: ID=1
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto atualizado com sucesso: ID=1
+]]></system-err>
+  </testcase>
+  <testcase name="shouldThrowExceptionWhenUpdatingNullProduct" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.003">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] ERROR com.crudsystem.dao.InMemoryProductDAO - Tentativa de atualizar produto nulo
+]]></system-err>
+  </testcase>
+  <testcase name="shouldThrowExceptionWhenUpdatingProductWithoutId" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.004">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] ERROR com.crudsystem.dao.InMemoryProductDAO - Tentativa de atualizar produto sem ID
+]]></system-err>
+  </testcase>
+  <testcase name="shouldThrowExceptionWhenUpdatingNonExistentProduct" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.002">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] WARN com.crudsystem.dao.InMemoryProductDAO - Tentativa de atualizar produto inexistente: ID=999
+]]></system-err>
+  </testcase>
+  <testcase name="shouldDeleteExistingProduct" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.001">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto criado com sucesso: ID=1
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto deletado com sucesso: ID=1
+]]></system-err>
+  </testcase>
+  <testcase name="shouldThrowExceptionWhenDeletingNonExistentProduct" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.001">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] WARN com.crudsystem.dao.InMemoryProductDAO - Tentativa de deletar produto inexistente: ID=999
+]]></system-err>
+  </testcase>
+  <testcase name="shouldThrowExceptionWhenDeletingWithNullId" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.001">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] ERROR com.crudsystem.dao.InMemoryProductDAO - Tentativa de deletar produto com ID inválido: null
+]]></system-err>
+  </testcase>
+  <testcase name="shouldCheckIfProductExists" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.0">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto criado com sucesso: ID=1
+]]></system-err>
+  </testcase>
+  <testcase name="shouldReturnFalseForNullIdWhenCheckingExistence" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.001">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+]]></system-err>
+  </testcase>
+  <testcase name="shouldCountProductsCorrectly" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.001">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto criado com sucesso: ID=1
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto criado com sucesso: ID=2
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto criado com sucesso: ID=3
+]]></system-err>
+  </testcase>
+  <testcase name="shouldClearAllProducts" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.001">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto criado com sucesso: ID=1
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto criado com sucesso: ID=2
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+]]></system-err>
+  </testcase>
+  <testcase name="shouldGenerateSequentialIds" classname="com.crudsystem.unit.InMemoryProductDAOTest" time="0.001">
+    <system-err><![CDATA[[main] INFO com.crudsystem.dao.InMemoryProductDAO - Todos os produtos foram removidos
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto criado com sucesso: ID=1
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto criado com sucesso: ID=2
+[main] INFO com.crudsystem.dao.InMemoryProductDAO - Produto criado com sucesso: ID=3
+]]></system-err>
+  </testcase>
+</testsuite>

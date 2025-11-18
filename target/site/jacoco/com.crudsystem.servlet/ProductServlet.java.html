@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductServlet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CRUD System</a> &gt; <a href="index.source.html" class="el_package">com.crudsystem.servlet</a> &gt; <span class="el_source">ProductServlet.java</span></div><h1>ProductServlet.java</h1><pre class="source lang-java linenums">package com.crudsystem.servlet;
+
+import com.crudsystem.dao.InMemoryProductDAO;
+import com.crudsystem.exception.DataAccessException;
+import com.crudsystem.exception.ProductNotFoundException;
+import com.crudsystem.exception.ValidationException;
+import com.crudsystem.model.Product;
+import com.crudsystem.service.ProductService;
+import com.crudsystem.util.JsonResponse;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.crudsystem.util.LocalDateTimeAdapter;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+
+/**
+ * Servlet REST para operações CRUD de produtos.
+ * Implementa tratamento robusto de erros e validações.
+ */
+@WebServlet(name = &quot;ProductServlet&quot;, urlPatterns = {&quot;/api/products&quot;, &quot;/api/products/*&quot;})
+<span class="nc" id="L31">public class ProductServlet extends HttpServlet {</span>
+<span class="nc" id="L32">    private static final Logger logger = LoggerFactory.getLogger(ProductServlet.class);</span>
+    private static final long serialVersionUID = 1L;
+    
+    private ProductService productService;
+    private Gson gson;
+    
+    @Override
+    public void init() throws ServletException {
+<span class="nc" id="L40">        super.init();</span>
+<span class="nc" id="L41">        productService = new ProductService(InMemoryProductDAO.getInstance());</span>
+<span class="nc" id="L42">        gson = new GsonBuilder()</span>
+<span class="nc" id="L43">                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())</span>
+<span class="nc" id="L44">                .create();</span>
+<span class="nc" id="L45">        logger.info(&quot;ProductServlet inicializado&quot;);</span>
+<span class="nc" id="L46">    }</span>
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+<span class="nc" id="L52">        setCommonHeaders(response);</span>
+        
+        try {
+<span class="nc" id="L55">            String pathInfo = request.getPathInfo();</span>
+            
+<span class="nc bnc" id="L57" title="All 4 branches missed.">            if (pathInfo == null || pathInfo.equals(&quot;/&quot;)) {</span>
+                // Listar todos os produtos
+<span class="nc" id="L59">                handleGetAll(response);</span>
+            } else {
+                // Buscar produto por ID
+<span class="nc" id="L62">                handleGetById(pathInfo, response);</span>
+            }
+            
+<span class="nc" id="L65">        } catch (Exception e) {</span>
+<span class="nc" id="L66">            logger.error(&quot;Erro inesperado no GET&quot;, e);</span>
+<span class="nc" id="L67">            sendErrorResponse(response, &quot;Erro interno do servidor&quot;, </span>
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+<span class="nc" id="L69">        }</span>
+<span class="nc" id="L70">    }</span>
+    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+<span class="nc" id="L76">        setCommonHeaders(response);</span>
+        
+        try {
+            // Lê o corpo da requisição
+<span class="nc" id="L80">            String requestBody = request.getReader().lines()</span>
+<span class="nc" id="L81">                    .reduce(&quot;&quot;, (accumulator, actual) -&gt; accumulator + actual);</span>
+            
+<span class="nc bnc" id="L83" title="All 2 branches missed.">            if (requestBody.trim().isEmpty()) {</span>
+<span class="nc" id="L84">                sendErrorResponse(response, &quot;Corpo da requisição vazio&quot;, </span>
+                        HttpServletResponse.SC_BAD_REQUEST);
+<span class="nc" id="L86">                return;</span>
+            }
+            
+            // Parse do JSON
+<span class="nc" id="L90">            ProductRequest productRequest = gson.fromJson(requestBody, ProductRequest.class);</span>
+            
+            // Validação básica
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            if (productRequest == null) {</span>
+<span class="nc" id="L94">                sendErrorResponse(response, &quot;Dados inválidos&quot;, </span>
+                        HttpServletResponse.SC_BAD_REQUEST);
+<span class="nc" id="L96">                return;</span>
+            }
+            
+            // Cria o produto
+<span class="nc" id="L100">            Product created = productService.createProduct(</span>
+<span class="nc" id="L101">                    productRequest.getName(),</span>
+<span class="nc" id="L102">                    productRequest.getDescription(),</span>
+<span class="nc" id="L103">                    productRequest.getPrice(),</span>
+<span class="nc" id="L104">                    productRequest.getQuantity()</span>
+            );
+            
+<span class="nc" id="L107">            response.setStatus(HttpServletResponse.SC_CREATED);</span>
+<span class="nc" id="L108">            String jsonResponse = JsonResponse.success(&quot;Produto criado com sucesso&quot;, created).toJson();</span>
+<span class="nc" id="L109">            response.getWriter().write(jsonResponse);</span>
+            
+<span class="nc" id="L111">        } catch (ValidationException e) {</span>
+<span class="nc" id="L112">            logger.warn(&quot;Erro de validação no POST: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L113">            sendErrorResponse(response, e.getMessage(), HttpServletResponse.SC_BAD_REQUEST);</span>
+<span class="nc" id="L114">        } catch (DataAccessException e) {</span>
+<span class="nc" id="L115">            logger.error(&quot;Erro de acesso a dados no POST&quot;, e);</span>
+<span class="nc" id="L116">            sendErrorResponse(response, &quot;Erro ao criar produto&quot;, </span>
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+<span class="nc" id="L118">        } catch (Exception e) {</span>
+<span class="nc" id="L119">            logger.error(&quot;Erro inesperado no POST&quot;, e);</span>
+<span class="nc" id="L120">            sendErrorResponse(response, &quot;Erro interno do servidor&quot;, </span>
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+<span class="nc" id="L122">        }</span>
+<span class="nc" id="L123">    }</span>
+    
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+<span class="nc" id="L129">        setCommonHeaders(response);</span>
+        
+        try {
+<span class="nc" id="L132">            String pathInfo = request.getPathInfo();</span>
+            
+<span class="nc bnc" id="L134" title="All 4 branches missed.">            if (pathInfo == null || pathInfo.equals(&quot;/&quot;)) {</span>
+<span class="nc" id="L135">                sendErrorResponse(response, &quot;ID do produto é obrigatório&quot;, </span>
+                        HttpServletResponse.SC_BAD_REQUEST);
+<span class="nc" id="L137">                return;</span>
+            }
+            
+<span class="nc" id="L140">            Long id = extractIdFromPath(pathInfo);</span>
+            
+            // Lê o corpo da requisição
+<span class="nc" id="L143">            String requestBody = request.getReader().lines()</span>
+<span class="nc" id="L144">                    .reduce(&quot;&quot;, (accumulator, actual) -&gt; accumulator + actual);</span>
+            
+<span class="nc bnc" id="L146" title="All 2 branches missed.">            if (requestBody.trim().isEmpty()) {</span>
+<span class="nc" id="L147">                sendErrorResponse(response, &quot;Corpo da requisição vazio&quot;, </span>
+                        HttpServletResponse.SC_BAD_REQUEST);
+<span class="nc" id="L149">                return;</span>
+            }
+            
+            // Parse do JSON
+<span class="nc" id="L153">            ProductRequest productRequest = gson.fromJson(requestBody, ProductRequest.class);</span>
+            
+<span class="nc bnc" id="L155" title="All 2 branches missed.">            if (productRequest == null) {</span>
+<span class="nc" id="L156">                sendErrorResponse(response, &quot;Dados inválidos&quot;, </span>
+                        HttpServletResponse.SC_BAD_REQUEST);
+<span class="nc" id="L158">                return;</span>
+            }
+            
+            // Atualiza o produto
+<span class="nc" id="L162">            productService.updateProduct(</span>
+                    id,
+<span class="nc" id="L164">                    productRequest.getName(),</span>
+<span class="nc" id="L165">                    productRequest.getDescription(),</span>
+<span class="nc" id="L166">                    productRequest.getPrice(),</span>
+<span class="nc" id="L167">                    productRequest.getQuantity()</span>
+            );
+            
+<span class="nc" id="L170">            response.setStatus(HttpServletResponse.SC_OK);</span>
+<span class="nc" id="L171">            String jsonResponse = JsonResponse.success(&quot;Produto atualizado com sucesso&quot;).toJson();</span>
+<span class="nc" id="L172">            response.getWriter().write(jsonResponse);</span>
+            
+<span class="nc" id="L174">        } catch (ProductNotFoundException e) {</span>
+<span class="nc" id="L175">            logger.warn(&quot;Produto não encontrado no PUT: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L176">            sendErrorResponse(response, e.getMessage(), HttpServletResponse.SC_NOT_FOUND);</span>
+<span class="nc" id="L177">        } catch (ValidationException e) {</span>
+<span class="nc" id="L178">            logger.warn(&quot;Erro de validação no PUT: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L179">            sendErrorResponse(response, e.getMessage(), HttpServletResponse.SC_BAD_REQUEST);</span>
+<span class="nc" id="L180">        } catch (DataAccessException e) {</span>
+<span class="nc" id="L181">            logger.error(&quot;Erro de acesso a dados no PUT&quot;, e);</span>
+<span class="nc" id="L182">            sendErrorResponse(response, &quot;Erro ao atualizar produto&quot;, </span>
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+<span class="nc" id="L184">        } catch (Exception e) {</span>
+<span class="nc" id="L185">            logger.error(&quot;Erro inesperado no PUT&quot;, e);</span>
+<span class="nc" id="L186">            sendErrorResponse(response, &quot;Erro interno do servidor&quot;, </span>
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+<span class="nc" id="L188">        }</span>
+<span class="nc" id="L189">    }</span>
+    
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+<span class="nc" id="L195">        setCommonHeaders(response);</span>
+        
+        try {
+<span class="nc" id="L198">            String pathInfo = request.getPathInfo();</span>
+            
+<span class="nc bnc" id="L200" title="All 4 branches missed.">            if (pathInfo == null || pathInfo.equals(&quot;/&quot;)) {</span>
+<span class="nc" id="L201">                sendErrorResponse(response, &quot;ID do produto é obrigatório&quot;, </span>
+                        HttpServletResponse.SC_BAD_REQUEST);
+<span class="nc" id="L203">                return;</span>
+            }
+            
+<span class="nc" id="L206">            Long id = extractIdFromPath(pathInfo);</span>
+            
+<span class="nc" id="L208">            productService.deleteProduct(id);</span>
+            
+<span class="nc" id="L210">            response.setStatus(HttpServletResponse.SC_OK);</span>
+<span class="nc" id="L211">            String jsonResponse = JsonResponse.success(&quot;Produto deletado com sucesso&quot;).toJson();</span>
+<span class="nc" id="L212">            response.getWriter().write(jsonResponse);</span>
+            
+<span class="nc" id="L214">        } catch (ProductNotFoundException e) {</span>
+<span class="nc" id="L215">            logger.warn(&quot;Produto não encontrado no DELETE: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L216">            sendErrorResponse(response, e.getMessage(), HttpServletResponse.SC_NOT_FOUND);</span>
+<span class="nc" id="L217">        } catch (DataAccessException e) {</span>
+<span class="nc" id="L218">            logger.error(&quot;Erro de acesso a dados no DELETE&quot;, e);</span>
+<span class="nc" id="L219">            sendErrorResponse(response, &quot;Erro ao deletar produto&quot;, </span>
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+<span class="nc" id="L221">        } catch (Exception e) {</span>
+<span class="nc" id="L222">            logger.error(&quot;Erro inesperado no DELETE&quot;, e);</span>
+<span class="nc" id="L223">            sendErrorResponse(response, &quot;Erro interno do servidor&quot;, </span>
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+<span class="nc" id="L225">        }</span>
+<span class="nc" id="L226">    }</span>
+    
+    private void handleGetAll(HttpServletResponse response) throws IOException {
+        try {
+<span class="nc" id="L230">            List&lt;Product&gt; products = productService.getAllProducts();</span>
+<span class="nc" id="L231">            response.setStatus(HttpServletResponse.SC_OK);</span>
+<span class="nc" id="L232">            String jsonResponse = JsonResponse.success(&quot;Produtos listados com sucesso&quot;, products).toJson();</span>
+<span class="nc" id="L233">            response.getWriter().write(jsonResponse);</span>
+<span class="nc" id="L234">        } catch (DataAccessException e) {</span>
+<span class="nc" id="L235">            logger.error(&quot;Erro ao listar produtos&quot;, e);</span>
+<span class="nc" id="L236">            sendErrorResponse(response, &quot;Erro ao listar produtos&quot;, </span>
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+<span class="nc" id="L238">        }</span>
+<span class="nc" id="L239">    }</span>
+    
+    private void handleGetById(String pathInfo, HttpServletResponse response) throws IOException {
+        try {
+<span class="nc" id="L243">            Long id = extractIdFromPath(pathInfo);</span>
+<span class="nc" id="L244">            Product product = productService.getProductById(id);</span>
+<span class="nc" id="L245">            response.setStatus(HttpServletResponse.SC_OK);</span>
+<span class="nc" id="L246">            String jsonResponse = JsonResponse.success(&quot;Produto encontrado&quot;, product).toJson();</span>
+<span class="nc" id="L247">            response.getWriter().write(jsonResponse);</span>
+<span class="nc" id="L248">        } catch (ProductNotFoundException e) {</span>
+<span class="nc" id="L249">            logger.warn(&quot;Produto não encontrado: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L250">            sendErrorResponse(response, e.getMessage(), HttpServletResponse.SC_NOT_FOUND);</span>
+<span class="nc" id="L251">        } catch (DataAccessException e) {</span>
+<span class="nc" id="L252">            logger.error(&quot;Erro ao buscar produto&quot;, e);</span>
+<span class="nc" id="L253">            sendErrorResponse(response, &quot;Erro ao buscar produto&quot;, </span>
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+<span class="nc" id="L255">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L256">            logger.warn(&quot;ID inválido no path: {}&quot;, pathInfo);</span>
+<span class="nc" id="L257">            sendErrorResponse(response, &quot;ID inválido&quot;, HttpServletResponse.SC_BAD_REQUEST);</span>
+<span class="nc" id="L258">        }</span>
+<span class="nc" id="L259">    }</span>
+    
+    private Long extractIdFromPath(String pathInfo) {
+<span class="nc" id="L262">        String idStr = pathInfo.substring(1); // Remove a barra inicial</span>
+<span class="nc" id="L263">        return Long.parseLong(idStr);</span>
+    }
+    
+    private void setCommonHeaders(HttpServletResponse response) {
+<span class="nc" id="L267">        response.setContentType(&quot;application/json&quot;);</span>
+<span class="nc" id="L268">        response.setCharacterEncoding(&quot;UTF-8&quot;);</span>
+<span class="nc" id="L269">        response.setHeader(&quot;Cache-Control&quot;, &quot;no-cache, no-store, must-revalidate&quot;);</span>
+<span class="nc" id="L270">        response.setHeader(&quot;Pragma&quot;, &quot;no-cache&quot;);</span>
+<span class="nc" id="L271">        response.setDateHeader(&quot;Expires&quot;, 0);</span>
+<span class="nc" id="L272">    }</span>
+    
+    private void sendErrorResponse(HttpServletResponse response, String message, int statusCode) 
+            throws IOException {
+<span class="nc" id="L276">        response.setStatus(statusCode);</span>
+<span class="nc" id="L277">        String jsonResponse = JsonResponse.error(message, statusCode).toJson();</span>
+<span class="nc" id="L278">        response.getWriter().write(jsonResponse);</span>
+<span class="nc" id="L279">    }</span>
+    
+    /**
+     * Classe interna para deserialização de requisições JSON.
+     */
+    private static class ProductRequest {
+        private String name;
+        private String description;
+        private BigDecimal price;
+        private Integer quantity;
+        
+        public String getName() {
+<span class="nc" id="L291">            return name;</span>
+        }
+        
+        public String getDescription() {
+<span class="nc" id="L295">            return description;</span>
+        }
+        
+        public BigDecimal getPrice() {
+<span class="nc" id="L299">            return price;</span>
+        }
+        
+        public Integer getQuantity() {
+<span class="nc" id="L303">            return quantity;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

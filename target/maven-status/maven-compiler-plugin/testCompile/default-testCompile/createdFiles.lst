@@ -1,0 +1,6 @@
+com/crudsystem/unit/ProductServiceTest.class
+com/crudsystem/unit/InMemoryProductDAOTest.class
+com/crudsystem/fuzz/ProductFuzzTest.class
+com/crudsystem/integration/FailureScenarioTest.class
+com/crudsystem/unit/ProductTest.class
+com/crudsystem/selenium/ProductWebInterfaceTest.class
